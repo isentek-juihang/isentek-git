@@ -4,11 +4,8 @@
 #include "ist_prep.h"
 #include "ist_macro.h"
 #include "ist_types.h"
-#include "ist_math.h"
 
 IST_EXTERN_C_BEGIN
-
-#ifdef IST_FLOAT_QFT
 
 // For Q format to IEEE754 floating point
 #define IST_SFP_RES _div(_one,_float(1<<IST_QFT_N))
@@ -24,14 +21,6 @@ IST_EXTERN_C_BEGIN
 	 (_le((_sft_),_add(IST_SFP_MIN,IST_SFP_RES)) ? \
 	  IST_QFP_MIN : \
 	  _int(_mul((_sft_),_float(1U<<IST_QFT_N)))))
-
-#else // IST_FLOAT_QFT
-
-// Do not convert Q format or IEEE754 floating 
-#define IST_SFP(_qft_) (_qft_)
-#define IST_QFP(_sft_) (_sft_)
-
-#endif // IST_FLOAT_QFT
 
 IST_EXTERN_C_END
 

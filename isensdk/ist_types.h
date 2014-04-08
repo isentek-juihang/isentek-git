@@ -144,6 +144,9 @@ IST_COMPILE_ASSERT(check_ISTUBIT8, sizeof(ISTUBIT8)==1);
 IST_COMPILE_ASSERT(check_ISTUBIT16, sizeof(ISTUBIT16)==2);
 IST_COMPILE_ASSERT(check_ISTUBIT32, sizeof(ISTUBIT32)==4);
 
+//** ------------------------------------------------------------------------
+//** TRUE/FALSE/VOID/NULL definitions
+//** ------------------------------------------------------------------------
 #define ISTTRUE 1
 #define ISTFALSE 0
 #define ISTVOID void
@@ -157,6 +160,9 @@ IST_COMPILE_ASSERT(check_ISTUBIT32, sizeof(ISTUBIT32)==4);
 #  endif
 #endif
 
+//** ------------------------------------------------------------------------
+//** Readable symbol definitions
+//** ------------------------------------------------------------------------
 #define IST_WRITE
 #define IST_READ
 #define IST_READWRITE

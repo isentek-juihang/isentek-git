@@ -18,17 +18,19 @@ IST_EXTERN_C_BEGIN
 //** ------------------------------------------------------------------------
 //** Error Class
 //** ------------------------------------------------------------------------
-typedef struct _ErrorCode {
-	// Methods
+
+struct _ErrorCode;
+typedef struct _ErrorCode ErrorCode;
+
+struct _ErrorCode {
     ISTVOID (*SetCode)(ISTINT code);
-    ISTINT (*GetCode)();
-    const char *(*ToString)();
-	// Properties
+    ISTINT (*GetCode)(ISTVOID);
+    CONST ISTCHAR *(*ToString)(ISTVOID);
 	IST_READ ISTBOOL IsObject;
 	IST_READ ISTINT code;
-} ErrorCode;
+};
 
-ErrorCode *IST_ErrorCode();
+ErrorCode *IST_ErrorCode(ISTVOID);
 
 IST_EXTERN_C_END
 

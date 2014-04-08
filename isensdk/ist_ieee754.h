@@ -20,23 +20,43 @@ ISTFLOAT float_add(ISTFLOAT, ISTFLOAT);
 ISTFLOAT float_sub(ISTFLOAT, ISTFLOAT);
 ISTFLOAT float_mul(ISTFLOAT, ISTFLOAT);
 ISTFLOAT float_div(ISTFLOAT, ISTFLOAT);
-INLINE ISTFLOAT float_negate(ISTFLOAT x) { return ((ISTFLOAT)(x ^ 0x80000000)); }
+#define float_negate(x) ((ISTFLOAT)((x) ^ 0x80000000))
 ISTFLOAT float_sqrt(ISTFLOAT);
 ISTBOOL float_eq(ISTFLOAT, ISTFLOAT);
 ISTBOOL float_le(ISTFLOAT, ISTFLOAT);
 ISTBOOL float_lt(ISTFLOAT, ISTFLOAT);
 ISTFLOAT float_abs(ISTFLOAT);
-INLINE ISTFLOAT float_eps() { return ((ISTFLOAT)(0x34000000)); }
+#define float_eps() ((ISTFLOAT)(0x34000000))
 ISTFLOAT float_copysign(ISTFLOAT, ISTFLOAT);
 ISTFLOAT float_atan(ISTFLOAT);
 ISTFLOAT float_atan2(ISTFLOAT, ISTFLOAT);
-INLINE ISTFLOAT float_pi() { return (ISTFLOAT)0x40490FDB; }
-INLINE ISTFLOAT float_pi_2() { return (ISTFLOAT)0x3FC90FDB; }
-INLINE ISTFLOAT float_pi_4() { return (ISTFLOAT)0x3F490FDB; }
-INLINE ISTFLOAT float_pi_3_4() { return (ISTFLOAT)0x4016CBE4; }
-INLINE ISTFLOAT float_one() { return (ISTFLOAT)0x3F800000; }
-INLINE ISTFLOAT float_max() { return (ISTFLOAT)0x7F7FFFFF; }
-INLINE ISTFLOAT float_sqrt2() { return (ISTFLOAT)0x3FB504F3; }
+#ifdef IST_FLOOR
+  ISTFLOAT float_floor(ISTFLOAT);
+#endif // IST_FLOOR
+#ifdef IST_EXP
+  ISTFLOAT float_exp(ISTFLOAT);
+#endif // IST_EXP
+#ifdef IST_TAN
+  ISTFLOAT float_tan(ISTFLOAT);
+#endif // IST_TAN
+#ifdef IST_SIN
+  ISTFLOAT float_sin(ISTFLOAT);
+#endif // SIT_SIN
+#ifdef IST_COS
+  ISTFLOAT float_cos(ISTFLOAT);
+#endif // IST_COS
+#ifdef IST_ASIN
+  ISTFLOAT float_asin(ISTFLOAT);
+#endif // IST_ASIN
+#ifdef IST_ACOS
+  ISTFLOAT float_acos(ISTFLOAT);
+#endif // IST_ACOS
+#define float_pi() ((ISTFLOAT)0x40490FDB)
+#define float_pi_2() ((ISTFLOAT)0x3FC90FDB)
+#define float_pi_4() ((ISTFLOAT)0x3F490FDB)
+#define float_pi_3_4() ((ISTFLOAT)0x4016CBE4)
+#define float_one() ((ISTFLOAT)0x3F800000)
+#define float_max() ((ISTFLOAT)0x7F7FFFFF)
 
 IST_EXTERN_C_END
 

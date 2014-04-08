@@ -53,57 +53,58 @@ struct ellipsoid {
 	ISTBOOL is_enable;
 };
 
-static Ellipsoid *New(ISTUINT max);
-static ISTVOID Delete(Ellipsoid *self);
-static ISTBOOL Process(Ellipsoid *self, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z, ISTUINT ndata);
-static ISTVOID SetRadius(Ellipsoid *self, ISTFLOAT radius);
-static ISTFLOAT GetRadius(Ellipsoid *self);
-static ISTVOID GetMatrix(Ellipsoid *self, ISTFLOAT m[3][3]);
-static ISTVOID GetBias(Ellipsoid *self, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z);
-static ISTFLOAT GetCovar(Ellipsoid *self);
-static ISTVOID Enable(Ellipsoid *self);
-static ISTVOID Disable(Ellipsoid *self);
-static ISTBOOL FitModel(Ellipsoid *self, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z, ISTINT ndata);
-static ISTBOOL Reset(struct ellipsoid *s, ISTUINT max);
-static ISTVOID MatDotMulMatT(ISTFLOAT *C, ISTFLOAT *A, ISTINT nrows, ISTINT ncols);
-static ISTVOID GetSubMat(ISTFLOAT *S, ISTINT mrows, ISTINT mcols, ISTFLOAT *A, ISTINT ncols, ISTINT row, ISTINT col);
-static ISTINT GetCholeskiLUDecomp(ISTFLOAT *A, ISTINT n);
-static ISTINT GetLowerTriangularInverse(ISTFLOAT *L, ISTINT n);
-static ISTINT GetCholeskiLUInverse(ISTFLOAT *LU, ISTINT n);
-static ISTVOID MatDotMulMats(ISTFLOAT *C, ISTFLOAT *A, ISTINT nrows, ISTINT ncols, ISTFLOAT *B, ISTINT mcols);
-static ISTVOID ExchangeRows(ISTFLOAT *A, ISTINT row1, ISTINT row2, ISTINT ncols);
-static ISTVOID ExchangeCols(ISTFLOAT *A, ISTINT col1, ISTINT col2, ISTINT nrows, ISTINT ncols);
-static ISTVOID CopyVector(ISTFLOAT *d, ISTFLOAT *s, ISTINT n);
-static ISTVOID GetIdentMat(ISTFLOAT *A, ISTINT n);
-static ISTVOID HessenbergElemTrans(ISTFLOAT *H, ISTFLOAT* S, ISTINT perm[], ISTINT n);
-static ISTINT GetHessenbergFormElem3(ISTFLOAT *A, ISTFLOAT* S);
-static ISTINT GetHessenbergFormElem6(ISTFLOAT *A, ISTFLOAT* S);
-static ISTVOID OneRealEigenValue(ISTFLOAT Hrow[], ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT row, ISTFLOAT shift);
-static ISTVOID UpdateRow(ISTFLOAT *Hrow, ISTFLOAT cos, ISTFLOAT sin, ISTINT n, ISTINT row);
-static ISTVOID UpdateCol(ISTFLOAT* H, ISTFLOAT cos, ISTFLOAT sin, ISTINT n, ISTINT col);
-static ISTVOID UpdateTrans(ISTFLOAT *S, ISTFLOAT cos, ISTFLOAT sin, ISTINT n, ISTINT k);
-static ISTVOID TwoEigenValues(ISTFLOAT *H, ISTFLOAT* S, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT n, ISTINT row, ISTFLOAT shift);
-static ISTVOID DotMulAndSumOfShifts(ISTFLOAT *H, ISTINT n, ISTINT max_row, ISTFLOAT* shift, ISTFLOAT *trace, ISTFLOAT *det, ISTINT iteration);
-static ISTINT TwoConscutiveSmallSubDiags(ISTFLOAT* H, ISTINT min_row, ISTINT max_row, ISTINT n, ISTFLOAT trace, ISTFLOAT det);
-static ISTVOID DoubleQRStep(ISTFLOAT *H, ISTINT min_row, ISTINT max_row, ISTINT min_col, ISTFLOAT trace, ISTFLOAT det, ISTFLOAT *S, ISTINT n);
-static ISTVOID DoubleQRIter(ISTFLOAT *H, ISTFLOAT *S, ISTINT min_row, ISTINT max_row, ISTINT n, ISTFLOAT* shift, ISTINT iteration);
-static ISTVOID BackSubstituteRealVector(ISTFLOAT *H, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT row, ISTFLOAT zero_tolerance, ISTINT n);
-static ISTVOID ComplexDiv(ISTFLOAT x, ISTFLOAT y, ISTFLOAT u, ISTFLOAT v, ISTFLOAT* a, ISTFLOAT* b);
-static ISTVOID BackSubstituteComplexVector(ISTFLOAT *H, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT row, ISTFLOAT zero_tolerance, ISTINT n);
-static ISTVOID BackSubstitute(ISTFLOAT *H, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT n);
-static ISTVOID GetEigenVectors(ISTFLOAT *H, ISTFLOAT *S, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT n);
-static ISTINT GetQRHessenbergMat(ISTFLOAT *H, ISTFLOAT *S, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT n, ISTINT max_iteration_count);
-static ISTVOID TransSquareMat(ISTFLOAT *A, ISTINT n);
-static ISTFLOAT CalcCovar(ISTINT ndata, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z, ISTFLOAT W[3][3], ISTFLOAT V[3], ISTFLOAT R);
-static ISTFLOAT RecalcRadius(ISTINT ndata, ISTFLOAT x[], ISTFLOAT y[], ISTFLOAT z[], ISTFLOAT W[3][3], ISTFLOAT V[3]);
+STATIC Ellipsoid *New(ISTUINT max);
+STATIC ISTVOID Delete(Ellipsoid *self);
+STATIC ISTBOOL Process(Ellipsoid *self, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z, ISTUINT ndata);
+STATIC ISTVOID SetRadius(Ellipsoid *self, ISTFLOAT radius);
+STATIC ISTVOID Enable(Ellipsoid *self);
+STATIC ISTVOID Disable(Ellipsoid *self);
+STATIC ISTBOOL FitModel(Ellipsoid *self, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z, ISTINT ndata);
+STATIC ISTBOOL Reset(Ellipsoid *self, ISTUINT max);
+STATIC ISTVOID MatDotMulMatT(ISTFLOAT *C, ISTFLOAT *A, ISTINT nrows, ISTINT ncols);
+STATIC ISTVOID GetSubMat(ISTFLOAT *S, ISTINT mrows, ISTINT mcols, ISTFLOAT *A, ISTINT ncols, ISTINT row, ISTINT col);
+STATIC ISTINT GetCholeskiLUDecomp(ISTFLOAT *A, ISTINT n);
+STATIC ISTINT GetLowerTriangularInverse(ISTFLOAT *L, ISTINT n);
+STATIC ISTINT GetCholeskiLUInverse(ISTFLOAT *LU, ISTINT n);
+STATIC ISTVOID MatDotMulMats(ISTFLOAT *C, ISTFLOAT *A, ISTINT nrows, ISTINT ncols, ISTFLOAT *B, ISTINT mcols);
+STATIC ISTVOID ExchangeRows(ISTFLOAT *A, ISTINT row1, ISTINT row2, ISTINT ncols);
+STATIC ISTVOID ExchangeCols(ISTFLOAT *A, ISTINT col1, ISTINT col2, ISTINT nrows, ISTINT ncols);
+STATIC ISTVOID CopyVector(ISTFLOAT *d, ISTFLOAT *s, ISTINT n);
+STATIC ISTVOID GetIdentMat(ISTFLOAT *A, ISTINT n);
+STATIC ISTVOID HessenbergElemTrans(ISTFLOAT *H, ISTFLOAT* S, ISTINT perm[], ISTINT n);
+STATIC ISTINT GetHessenbergFormElem3(ISTFLOAT *A, ISTFLOAT* S);
+STATIC ISTINT GetHessenbergFormElem6(ISTFLOAT *A, ISTFLOAT* S);
+STATIC ISTVOID OneRealEigenValue(ISTFLOAT Hrow[], ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT row, ISTFLOAT shift);
+STATIC ISTVOID UpdateRow(ISTFLOAT *Hrow, ISTFLOAT cos, ISTFLOAT sin, ISTINT n, ISTINT row);
+STATIC ISTVOID UpdateCol(ISTFLOAT* H, ISTFLOAT cos, ISTFLOAT sin, ISTINT n, ISTINT col);
+STATIC ISTVOID UpdateTrans(ISTFLOAT *S, ISTFLOAT cos, ISTFLOAT sin, ISTINT n, ISTINT k);
+STATIC ISTVOID TwoEigenValues(ISTFLOAT *H, ISTFLOAT* S, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT n, ISTINT row, ISTFLOAT shift);
+STATIC ISTVOID DotMulAndSumOfShifts(ISTFLOAT *H, ISTINT n, ISTINT max_row, ISTFLOAT* shift, ISTFLOAT *trace, ISTFLOAT *det, ISTINT iteration);
+STATIC ISTINT TwoConscutiveSmallSubDiags(ISTFLOAT* H, ISTINT min_row, ISTINT max_row, ISTINT n, ISTFLOAT trace, ISTFLOAT det);
+STATIC ISTVOID DoubleQRStep(ISTFLOAT *H, ISTINT min_row, ISTINT max_row, ISTINT min_col, ISTFLOAT trace, ISTFLOAT det, ISTFLOAT *S, ISTINT n);
+STATIC ISTVOID DoubleQRIter(ISTFLOAT *H, ISTFLOAT *S, ISTINT min_row, ISTINT max_row, ISTINT n, ISTFLOAT* shift, ISTINT iteration);
+STATIC ISTVOID BackSubstituteRealVector(ISTFLOAT *H, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT row, ISTFLOAT zero_tolerance, ISTINT n);
+STATIC ISTVOID ComplexDiv(ISTFLOAT x, ISTFLOAT y, ISTFLOAT u, ISTFLOAT v, ISTFLOAT* a, ISTFLOAT* b);
+STATIC ISTVOID BackSubstituteComplexVector(ISTFLOAT *H, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT row, ISTFLOAT zero_tolerance, ISTINT n);
+STATIC ISTVOID BackSubstitute(ISTFLOAT *H, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT n);
+STATIC ISTVOID GetEigenVectors(ISTFLOAT *H, ISTFLOAT *S, ISTFLOAT eigen_imag[], ISTINT n);
+STATIC ISTINT GetQRHessenbergMat(ISTFLOAT *H, ISTFLOAT *S, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT n, ISTINT max_iteration_count);
+STATIC ISTVOID TransSquareMat(ISTFLOAT *A, ISTINT n);
+STATIC ISTFLOAT CalcCovar(ISTINT ndata, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z, ISTFLOAT W[3][3], ISTFLOAT V[3], ISTFLOAT R);
+STATIC ISTFLOAT RecalcRadius(ISTINT ndata, ISTFLOAT x[], ISTFLOAT y[], ISTFLOAT z[], ISTFLOAT W[3][3], ISTFLOAT V[3]);
 
-static Ellipsoid ThisClass = {0};
-static Ellipsoid *This = (Ellipsoid *)NULL;
+STATIC Ellipsoid ThisClass = {0};
+STATIC Ellipsoid *This = (Ellipsoid *)NULL;
 
-ISTBOOL Reset(struct ellipsoid *s, ISTUINT max)
+ISTBOOL Reset(Ellipsoid *self, ISTUINT max)
 {
+	struct ellipsoid *s;
 	struct ellipsoid_model *model;
 
+	if (!self) {
+		goto EXIT;
+	}
+	s = (struct ellipsoid *)self;
 	model = &s->model;
 	model->max = max;
 	model->datas = (ISTFLOAT *)ist_realloc(model->datas, 10*max*sizeof(ISTFLOAT));
@@ -135,7 +136,7 @@ Ellipsoid *New(ISTUINT max)
 	s->pub = ThisClass;
 	s->pub.IsObject = ISTTRUE;
 	s->FitModel = FitModel;
-	if (!Reset(s, max)) {
+	if (!Reset((Ellipsoid *)s, max)) {
 		goto EXIT_DELETE_ELLIPSOID;
 	}
 	return (Ellipsoid *)s;
@@ -556,7 +557,6 @@ ISTINT TwoConscutiveSmallSubDiags(ISTFLOAT* H, ISTINT min_row, ISTINT max_row, I
 	ISTFLOAT x, y ,z, s;
 	ISTFLOAT* pH;
 	ISTINT i, k;
-	ISTFLOAT eps = _eps;
 	ISTFLOAT tor;
 
 	for (k = max_row - 2, pH = H + k * n; k >= min_row; pH -= n, k--) {
@@ -569,7 +569,7 @@ ISTINT TwoConscutiveSmallSubDiags(ISTFLOAT* H, ISTINT min_row, ISTINT max_row, I
 		z = _div(z, s);
 		if (k == min_row)
 			break;
-		tor = _mul3(eps, _abs(x), _add3(_abs(pH[k-1-n]), _abs(pH[k]), _abs(pH[n + k + 1])));
+		tor = _mul3(_eps, _abs(x), _add3(_abs(pH[k-1-n]), _abs(pH[k]), _abs(pH[n + k + 1])));
 		if (_le(_mul(_abs(pH[k-1]), _add(_abs(y), _abs(z))), tor))
 			break;
 	}
@@ -781,7 +781,6 @@ ISTVOID BackSubstitute(ISTFLOAT *H, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[]
 	ISTFLOAT zero_tolerance;
 	ISTFLOAT *pH;
 	ISTINT i, j, row;
-	ISTFLOAT eps = _eps;
 
 	pH = H;
 	zero_tolerance = _abs(pH[0]);
@@ -789,7 +788,7 @@ ISTVOID BackSubstitute(ISTFLOAT *H, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[]
 		for (j = i-1; j < n; j++)
 			zero_tolerance = _add(zero_tolerance, _abs(pH[j]));
 	}
-	zero_tolerance = _mul(zero_tolerance, eps);
+	zero_tolerance = _mul(zero_tolerance, _eps);
 	for (row = n-1; row >= 0; row--) {
 		if (_eq(eigen_imag[row], 0))
 			BackSubstituteRealVector(H, eigen_real, eigen_imag, row, zero_tolerance, n);
@@ -798,7 +797,7 @@ ISTVOID BackSubstitute(ISTFLOAT *H, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[]
 	} 
 }
 
-ISTVOID GetEigenVectors(ISTFLOAT *H, ISTFLOAT *S, ISTFLOAT eigen_real[], ISTFLOAT eigen_imag[], ISTINT n)
+ISTVOID GetEigenVectors(ISTFLOAT *H, ISTFLOAT *S, ISTFLOAT eigen_imag[], ISTINT n)
 {
 	ISTFLOAT* pH;
 	ISTFLOAT* pS;
@@ -836,14 +835,13 @@ ISTINT GetQRHessenbergMat(ISTFLOAT *H, ISTFLOAT *S, ISTFLOAT eigen_real[], ISTFL
 	ISTINT found;
 	ISTFLOAT shift = 0;
 	ISTFLOAT* pH;
-	ISTFLOAT eps = _eps;
 	ISTFLOAT tor;
 
 	for (row = n - 1; row >= 0; row--) {
 		found = 0;
 		for (iter = 1; iter <= iter_max; iter++) {
 			for (i = row, pH = H + row * n; i > 0; i--, pH -= n) {
-				tor = _mul(eps, _add(_abs(*(pH - n + i - 1)), _abs(*(pH + i))));
+				tor = _mul(_eps, _add(_abs(*(pH - n + i - 1)), _abs(*(pH + i))));
 				if (_le(_abs(*(pH + i - 1 )), tor))
 					break;
 			}
@@ -868,7 +866,7 @@ ISTINT GetQRHessenbergMat(ISTFLOAT *H, ISTFLOAT *S, ISTFLOAT eigen_real[], ISTFL
 	}
 
 	BackSubstitute(H, eigen_real, eigen_imag, n);
-	GetEigenVectors(H, S, eigen_real, eigen_imag, n);
+	GetEigenVectors(H, S, eigen_imag, n);
 	return 0;
 }
 
@@ -1151,11 +1149,12 @@ EXIT:
 	return ISTFALSE;
 }
 
-ISTBOOL Process(Ellipsoid *self, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z, ISTUINT ndata)
+ISTBOOL Process(Ellipsoid *self, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z, ISTUINT num)
 {
 	struct ellipsoid *s;
 	struct ellipsoid_model *model;
 	ISTBOOL res;
+	ISTSHORT i, j;
 
 	if (!self || self->IsObject == ISTFALSE) {
 		goto EXIT;
@@ -1165,16 +1164,27 @@ ISTBOOL Process(Ellipsoid *self, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z, ISTUINT 
 	if (!x || !y || !z) {
 		goto EXIT;
 	}
-	if (ndata > model->max) {
-		ndata = model->max;
+	if (num > model->max) {
+		num = model->max;
 	}
 	if (_le(model->radius, 0)) {
-		model->radius = _float(100);
+		model->radius = _float(IST_ELLIPSOID_RADIUS);
 	}
 	if (s->is_enable) {
-		res = s->FitModel(self, x, y, z, (ISTINT)ndata);
-		if (res && !s->is_valid)
-			s->is_valid = ISTTRUE;
+		res = s->FitModel(self, x, y, z, (ISTINT)num);
+		if (res) {
+			self->Radius = model->radius;
+			self->Covariant = model->covar;
+			for (i = 0; i < 3; ++i) {
+				self->Bias[i] = model->bias[i];
+				for (j = 0; j < 3; ++j) {
+					self->Matrix[i][j] = model->mat[i][j];
+				}
+			}
+			if (!s->is_valid) {
+				s->is_valid = ISTTRUE;
+			}
+		}
 	}
 	return s->is_valid;
 
@@ -1197,94 +1207,6 @@ ISTVOID SetRadius(Ellipsoid *self, ISTFLOAT radius)
 
 EXIT:
 	return;
-}
-
-ISTFLOAT GetRadius(Ellipsoid *self)
-{
-	struct ellipsoid *s;
-	struct ellipsoid_model *model;
-
-	if (!self || self->IsObject == ISTFALSE) {
-		goto EXIT;
-	}
-	s = (struct ellipsoid *)self;
-	model = &s->model;
-	return model->radius;
-
-EXIT:
-	return 0;
-}
-
-ISTVOID GetMatrix(Ellipsoid *self, ISTFLOAT mat[3][3])
-{
-	struct ellipsoid *s;
-	struct ellipsoid_model *model;
-	ISTSHORT i, j;
-
-	if (!self || self->IsObject == ISTFALSE) {
-		goto EXIT;
-	}
-	s = (struct ellipsoid *)self;
-	if (!s->is_valid) {
-		goto EXIT;
-	}
-	model = &s->model;
-	for (i = 0; i < 3; ++i) {
-		for (j = 0; j < 3; ++j) {
-			mat[i][j] = model->mat[i][j];
-		}
-	}
-	return;
-
-EXIT:
-	return;
-}
-
-ISTVOID GetBias(Ellipsoid *self, ISTFLOAT *x, ISTFLOAT *y, ISTFLOAT *z)
-{
-	struct ellipsoid *s;
-	struct ellipsoid_model *model;
-
-	if (!self || self->IsObject == ISTFALSE) {
-		goto EXIT;
-	}
-	s = (struct ellipsoid *)self;
-	if (!s->is_valid) {
-		goto EXIT;
-	}
-	model = &s->model;
-	if (x) {
-		*x = model->bias[0];
-	}
-	if (y) {
-		*y = model->bias[1];
-	}
-	if (z) {
-		*z = model->bias[2];
-	}
-	return;
-
-EXIT:
-	return;
-}
-
-ISTFLOAT GetCovar(Ellipsoid *self)
-{
-	struct ellipsoid *s;
-	struct ellipsoid_model *model;
-
-	if (!self || self->IsObject == ISTFALSE) {
-		goto EXIT;
-	}
-	s = (struct ellipsoid *)self;
-	if (!s->is_valid) {
-		goto EXIT;
-	}
-	model = &s->model;
-	return model->covar;
-
-EXIT:
-	return _max;
 }
 
 ISTVOID Enable(Ellipsoid *self)
@@ -1312,14 +1234,14 @@ ISTVOID Disable(Ellipsoid *self)
 	}
 	s = (struct ellipsoid *)self;
 	model = &s->model;
-	Reset(s, model->max);
+	Reset(self, model->max);
 	return;
 
 EXIT:
 	return;
 }
 
-Ellipsoid *IST_Ellipsoid()
+Ellipsoid *IST_Ellipsoid(ISTVOID)
 {
 	if (!This) {
 		ThisClass.IsObject = ISTFALSE;
@@ -1327,10 +1249,6 @@ Ellipsoid *IST_Ellipsoid()
 		ThisClass.Delete = Delete;
 		ThisClass.Process = Process;
 		ThisClass.SetRadius = SetRadius;
-		ThisClass.GetRadius = GetRadius;
-		ThisClass.GetMatrix = GetMatrix;
-		ThisClass.GetBias = GetBias;
-		ThisClass.GetCovar = GetCovar;
 		ThisClass.Enable = Enable;
 		ThisClass.Disable = Disable;
 		This = &ThisClass;

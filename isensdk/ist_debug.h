@@ -7,7 +7,7 @@
 
 IST_EXTERN_C_BEGIN
 
-ISTVOID ist_printf(const ISTCHAR *fmt, ...);
+ISTVOID ist_printf(CONST ISTCHAR *fmt, ...);
 
 #ifdef IST_DEBUG
 #  define IST_DBG ist_printf

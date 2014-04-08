@@ -7,19 +7,22 @@
 
 IST_EXTERN_C_BEGIN
 
-typedef struct _Sphere {
-	struct _Sphere *(*New)();
-	ISTVOID (*Delete)(struct _Sphere *);
-	ISTBOOL (*Process)(struct _Sphere *, ISTFLOAT x, ISTFLOAT y, ISTFLOAT z);
-	ISTBOOL (*GetBias)(struct _Sphere *, ISTFLOAT bias[3]);
-	ISTFLOAT (*GetRadius)(struct _Sphere *);
-	ISTVOID (*SetRadiusMin)(struct _Sphere *, ISTFLOAT min);
-	ISTVOID (*Enable)(struct _Sphere *);
-	ISTVOID (*Disable)(struct _Sphere *);
-	IST_READ ISTBOOL IsObject;
-} Sphere;
+struct _Sphere;
+typedef struct _Sphere Sphere;
 
-Sphere * IST_Sphere();
+struct _Sphere {
+	Sphere *(*New)(void);
+	ISTVOID (*Delete)(Sphere *);
+	ISTBOOL (*Process)(Sphere *, ISTFLOAT data[3]);
+	ISTVOID (*SetRadiusMin)(Sphere *, ISTFLOAT min);
+	ISTVOID (*Enable)(Sphere *);
+	ISTVOID (*Disable)(Sphere *);
+	IST_READ ISTBOOL IsObject;
+	IST_READ ISTFLOAT Bias[3];
+	IST_READ ISTFLOAT Radius;
+};
+
+Sphere * IST_Sphere(void);
 
 IST_EXTERN_C_END
 

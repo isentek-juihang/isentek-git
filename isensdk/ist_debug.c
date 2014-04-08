@@ -6,11 +6,11 @@
 #  include <stdarg.h>
 #endif
 
-ISTVOID ist_printf(const char *fmt, ...)
+ISTVOID ist_printf(CONST ISTCHAR *fmt, ...)
 {
 #ifdef IST_DEBUG
 #  ifdef IST_OS_WIN32
-	char buf[IST_DBG_BUF_SIZE];
+	ISTCHAR buf[IST_DBG_BUF_SIZE];
 	va_list ap;
 
 	va_start(ap, fmt);
@@ -18,7 +18,7 @@ ISTVOID ist_printf(const char *fmt, ...)
 #ifdef IST_DBG_CONSOLE
 	fprintf(stdout, "%s", buf);
 #endif
-	OutputDebugString(buf);
+	OutputDebugStringA(buf);
 
 	va_end(ap);
 #  elif defined(IST_OS_ANDROID)

@@ -4,23 +4,25 @@
 #include "ist_prep.h"
 #include "ist_macro.h"
 #include "ist_types.h"
-#include "ist_qft.h"
 
 IST_EXTERN_C_BEGIN
 
-typedef struct _Hardiron {
-	struct _Hardiron *(*New)();
-	ISTVOID (*Delete)(struct _Hardiron *);
-	ISTBOOL (*Process)(struct _Hardiron *, ISTFLOAT x, ISTFLOAT y, ISTFLOAT z);
-	ISTBOOL (*GetBias)(struct _Hardiron *, ISTFLOAT bias[3]);
-	ISTFLOAT (*GetRadius)(struct _Hardiron *);
-	ISTBOOL (*GetData)(struct _Hardiron *, ISTFLOAT data[3]);
-	ISTVOID (*Enable)(struct _Hardiron *);
-	ISTVOID (*Disable)(struct _Hardiron *);
-	IST_READ ISTBOOL IsObject;
-} Hardiron;
+struct _Hardiron;
+typedef struct _Hardiron Hardiron;
 
-Hardiron * IST_Hardiron();
+struct _Hardiron {
+	Hardiron *(*New)(ISTVOID);
+	ISTVOID (*Delete)(Hardiron *);
+	ISTBOOL (*Process)(Hardiron *, ISTFLOAT data[3]);
+	ISTVOID (*Enable)(Hardiron *);
+	ISTVOID (*Disable)(Hardiron *);
+	IST_READ ISTBOOL IsObject;
+	IST_READ ISTFLOAT Data[3];
+	IST_READ ISTFLOAT Bias[3];
+	IST_READ ISTFLOAT Radius;
+};
+
+Hardiron *IST_Hardiron(ISTVOID);
 
 IST_EXTERN_C_END
 

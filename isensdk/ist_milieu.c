@@ -2,13 +2,13 @@
 
 #ifdef IST_DEBUG_MEM
 
-static size_t memx = 0;
-static size_t memc = 0;
+STATIC ISTUINT memx = 0;
+STATIC ISTUINT memc = 0;
 
-size_t __ist_mem_watch(size_t c, int op)
+ISTUINT __ist_mem_watch(ISTUINT c, ISTINT op)
 {
-	const char *opname;
-	size_t pn;
+	CONST ISTCHAR *opname;
+	ISTUINT pn;
 	if (op > 0) {
 		memc += c;
 		opname = "ADD";
@@ -29,45 +29,45 @@ size_t __ist_mem_watch(size_t c, int op)
 	return memc;
 }
 
-void *__ist_calloc(size_t c, size_t s)
+ISTVOID *__ist_calloc(ISTUINT c, ISTUINT s)
 {
-	size_t cs = c*s;
-	void *p = NULL;
+	ISTUINT cs = c*s;
+	ISTVOID *p = NULL;
 
 	if (cs > 0) {
-		p = malloc(cs+sizeof(size_t));
+		p = malloc(cs+sizeof(ISTUINT));
 		if (p) {
 			__ist_mem_watch(cs, 1);
-			*(size_t *)p = cs;
-			p = (void *)((size_t *)p + 1);
+			*(ISTUINT *)p = cs;
+			p = (ISTVOID *)((ISTUINT *)p + 1);
 		}
 	}
 	return p;
 }
 
-void *__ist_realloc(void *p, size_t s)
+ISTVOID *__ist_realloc(ISTVOID *p, ISTUINT s)
 {
-	size_t cs = p ? *((size_t *)p - 1) : 0;
-	void *op = p ? ((size_t *)p - 1) : NULL;
-	void *np = realloc(op, s+sizeof(size_t));
+	ISTUINT cs = p ? *((ISTUINT *)p - 1) : 0;
+	ISTVOID *op = p ? ((ISTUINT *)p - 1) : NULL;
+	ISTVOID *np = realloc(op, s+sizeof(ISTUINT));
 	if (np) {
 		if (cs > s) {
 			__ist_mem_watch(cs-s, -1);
 		} else if (cs < s) {
 			__ist_mem_watch(s-cs, 1);
 		}
-		*(size_t *)np = s;
-		np = (void *)((size_t *)np + 1);
+		*(ISTUINT *)np = s;
+		np = (ISTVOID *)((ISTUINT *)np + 1);
 	} else {
 		__ist_mem_watch(cs, -1);
 	}
 	return np;
 }
 
-void __ist_free(void *p)
+ISTVOID __ist_free(ISTVOID *p)
 {
-	size_t cs = p ? *((size_t *)p - 1) : 0;
-	void *op = p ? (size_t *)p - 1 : NULL;
+	ISTUINT cs = p ? *((ISTUINT *)p - 1) : 0;
+	ISTVOID *op = p ? (ISTUINT *)p - 1 : NULL;
 	if (op) {
 		free(op);
 		__ist_mem_watch(cs, -1);
@@ -75,12 +75,12 @@ void __ist_free(void *p)
 	return;
 }
 
-void __ist_memset(void *p, int v, size_t s)
+ISTVOID __ist_memset(ISTVOID *p, ISTINT v, ISTUINT s)
 {
 	memset(p, v, s);
 }
 
-void *__ist_memcpy(void *d, const void *s, size_t l)
+ISTVOID *__ist_memcpy(ISTVOID *d, CONST ISTVOID *s, ISTUINT l)
 {
 	return memcpy(d, s, l);
 }

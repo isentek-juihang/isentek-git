@@ -4,14 +4,6 @@
 #include "ist_prep.h"
 #include "ist_macro.h"
 #include "ist_types.h"
-#include "ist_errno.h"
-#include "ist_debug.h"
-#include "ist_math.h"
-#include "ist_qft.h"
-#include "ist_ellipsoid.h"
-#include "ist_sphere.h"
-#include "ist_hardiron.h"
-#include "ist_softiron.h"
 
 #if defined(IST_OS_WIN32) \
 	|| defined(IST_OS_ANDROID) \
@@ -20,12 +12,12 @@
 #  include <stdlib.h>
 #  include <string.h>
 #  ifdef IST_DEBUG_MEM
-     size_t __ist_mem_watch(size_t c, int op);
-     void * __ist_calloc(size_t c, size_t s);
-	 void * __ist_realloc(void *p, size_t s);
-	 void __ist_free(void *p);
-	 void __ist_memset(void *p, int v, size_t s);
-	 void * __ist_memcpy(void *d, const void *s, size_t l);
+ISTUINT __ist_mem_watch(ISTUINT c, ISTINT op);
+ISTVOID * __ist_calloc(ISTUINT c, ISTUINT s);
+ISTVOID * __ist_realloc(ISTVOID *p, ISTUINT s);
+ISTVOID __ist_free(ISTVOID *p);
+ISTVOID __ist_memset(ISTVOID *p, ISTINT v, ISTUINT s);
+ISTVOID * __ist_memcpy(ISTVOID *d, CONST ISTVOID *s, ISTUINT l);
 #  else
 #    define __ist_mem_watch(c,op) 0
 #    define __ist_calloc(c,s) calloc((c),(s))
@@ -42,5 +34,65 @@
 #else
 #  error "Unknown development environment."
 #endif
+
+#include "ist_errno.h"
+#include "ist_debug.h"
+#include "ist_math.h"
+
+#ifdef IST_FIFO
+#  include "ist_fifo.h"
+#endif // IST_FIFO
+
+#ifdef IST_ALMA
+#  include "ist_alma.h"
+#endif // IST_ALMA
+
+#ifdef IST_SMA
+#  include "ist_sma.h"
+#endif // IST_SMA
+
+#ifdef IST_RMA
+#  include "ist_rma.h"
+#endif // IST_RMA
+
+#ifdef IST_MMA
+#  include "ist_mma.h"
+#endif // IST_MMA
+
+#ifdef IST_WMA
+#  include "ist_wma.h"
+#endif // IST_WMA
+
+#ifdef IST_BIQUAD_LPF
+#  include "ist_bqdlpf.h"
+#endif // IST_BIQUAD_LPF
+
+#ifdef IST_SPHERE
+#  include "ist_sphere.h"
+#endif // IST_SPHERE
+
+#ifdef IST_ELLIPSOID
+#  include "ist_ellipsoid.h"
+#endif // IST_ELLIPSOID
+
+#ifdef IST_HIRON
+#  include "ist_hardiron.h"
+#endif // IST_HIRON
+
+#ifdef IST_SIRON
+#  include "ist_softiron.h"
+#endif // IST_SIRON
+
+#ifdef IST_MAGNET
+#  include "ist_magnet.h"
+#endif // IST_MAGNET
+
+#ifdef IST_ACCEL
+#  include "ist_accel.h"
+#endif // IST_ACCEL
+
+#ifdef IST_ROTATION
+#  include "ist_rotation.h"
+#endif // IST_ROTATION
 
 #endif // IST_MILIEU_H_INCLUDED

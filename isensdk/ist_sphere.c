@@ -1,15 +1,17 @@
 #include "ist_milieu.h"
 
+#ifdef IST_SPHERE
+
 #define IST_SPHERE_DATAMAX IST_HIRON_DBUF_MAX
 #define IST_SPHERE_OFFSET_NUM IST_HIRON_ODBUF_MAX
 #define IST_SPHERE_RADIUS_MIN _float(IST_MAG_MIN)	// 10 uT
 #define IST_SPHERE_VARIATION_RATIO _frac(3, 20)		// 0.15
 
-typedef ISTBOOL (*ist_FitModel)(Sphere *, ISTFLOAT, ISTFLOAT, ISTFLOAT);
+typedef ISTBOOL (*ist_FitModel)(Sphere *, ISTFLOAT data[3]);
 
 struct sphere_model {
 	ISTFLOAT data[IST_SPHERE_DATAMAX][3];
-	ISTSHORT ndata;
+	ISTSHORT num;
 	ISTFLOAT offsets[IST_SPHERE_OFFSET_NUM][3];
 	ISTFLOAT p4s[4][3];
 	ISTFLOAT mean[3];
@@ -27,40 +29,38 @@ struct sphere {
 	ISTBOOL is_enable;
 };
 
-static Sphere *New();
-static ISTVOID Delete(Sphere *self);
-static ISTBOOL Process(Sphere *self, ISTFLOAT x, ISTFLOAT y, ISTFLOAT z);
-static ISTVOID SetRadiusMin(Sphere *self, ISTFLOAT bound);
-static ISTBOOL GetBias(Sphere *self, ISTFLOAT bias[3]);
-static ISTFLOAT GetRadius(Sphere *self);
-static ISTVOID Enable(Sphere *self);
-static ISTVOID Disable(Sphere *self);
-static ISTVOID RecieveData(struct sphere_model *data, ISTFLOAT x, ISTFLOAT y, ISTFLOAT z);
-static ISTBOOL IsInitedVector(ISTFLOAT v[3]);
-static ISTBOOL GetAvailableVectorNum(struct sphere_model *model);
-static ISTFLOAT GetDistance(const ISTFLOAT x[3], const ISTFLOAT y[3]);
-static ISTVOID Get4Points(struct sphere_model *model);
-static ISTFLOAT GetDet(ISTFLOAT a[4][4], ISTSHORT n);
-static ISTBOOL GetParams(struct sphere_model *model, ISTFLOAT radius);
-static ISTBOOL GetSphereFrom4Points(struct sphere_model *model);
-static ISTBOOL FitModel(Sphere *self, ISTFLOAT x, ISTFLOAT y, ISTFLOAT z);
-static ISTVOID Reset(struct sphere *s);
+STATIC Sphere *New(ISTVOID);
+STATIC ISTVOID Delete(Sphere *self);
+STATIC ISTBOOL Process(Sphere *self, ISTFLOAT data[3]);
+STATIC ISTVOID SetRadiusMin(Sphere *self, ISTFLOAT bound);
+STATIC ISTVOID Enable(Sphere *self);
+STATIC ISTVOID Disable(Sphere *self);
+STATIC ISTVOID RecieveData(struct sphere_model *model, ISTFLOAT data[3]);
+STATIC ISTBOOL IsInitedVector(ISTFLOAT v[3]);
+STATIC ISTBOOL GetAvailableVectorNum(struct sphere_model *model);
+STATIC ISTFLOAT GetDistance(CONST ISTFLOAT x[3], CONST ISTFLOAT y[3]);
+STATIC ISTVOID Get4Points(struct sphere_model *model);
+STATIC ISTFLOAT GetDet(ISTFLOAT a[4][4], ISTSHORT n);
+STATIC ISTBOOL GetParams(struct sphere_model *model, ISTFLOAT radius);
+STATIC ISTBOOL GetSphereFrom4Points(struct sphere_model *model);
+STATIC ISTBOOL FitModel(Sphere *self, ISTFLOAT data[3]);
+STATIC ISTVOID Reset(Sphere *s);
 
-static Sphere ThisClass = {0};
-static Sphere *This = (Sphere *)NULL;
+STATIC Sphere ThisClass = {0};
+STATIC Sphere *This = (Sphere *)NULL;
 
-ISTVOID RecieveData(struct sphere_model *model, ISTFLOAT x, ISTFLOAT y, ISTFLOAT z)
+ISTVOID RecieveData(struct sphere_model *model, ISTFLOAT data[3])
 {
 	ISTSHORT i, j;
 
-	for (i = 1; i < IST_SPHERE_DATAMAX; ++i) {
-		for (j = 0; j < 3; ++j) {
+	for (j = 0; j < 3; ++j) {
+		for (i = 1; i < IST_SPHERE_DATAMAX; ++i) {
 			model->data[IST_SPHERE_DATAMAX - i][j] = model->data[IST_SPHERE_DATAMAX - i - 1][j];
 		}
 	}
-	model->data[0][0] = x;
-	model->data[0][1] = y;
-	model->data[0][2] = z;
+	for (j = 0; j < 3; ++j) {
+		model->data[0][j] = data[j];
+	}
 }
 
 ISTBOOL IsInitedVector(ISTFLOAT v[3])
@@ -85,14 +85,14 @@ ISTBOOL GetAvailableVectorNum(struct sphere_model *model)
 			break;
 		}
 	}
-	model->ndata = ndata;
+	model->num = ndata;
 	if (ndata < 4) {
 		return ISTFALSE;
 	}
 	return ISTTRUE;
 }
 
-ISTFLOAT GetDistance(const ISTFLOAT x[3], const ISTFLOAT y[3])
+ISTFLOAT GetDistance(CONST ISTFLOAT x[3], CONST ISTFLOAT y[3])
 {
 	ISTSHORT i;
 	ISTFLOAT tmp, r = 0;
@@ -112,7 +112,7 @@ ISTVOID Get4Points(struct sphere_model *model)
 	ISTFLOAT dv[IST_SPHERE_DATAMAX][3];
 	ISTFLOAT cross[3] = {0};
 	ISTFLOAT tmpv[3] = {0};
-	ISTSHORT ndata = model->ndata;
+	ISTSHORT ndata = model->num;
 	ISTSHORT i, j;
 	ISTFLOAT dist, tmp;
 
@@ -347,12 +347,12 @@ EXIT:
 	return ISTFALSE;
 }
 
-ISTBOOL FitModel(Sphere *self, ISTFLOAT x, ISTFLOAT y, ISTFLOAT z)
+ISTBOOL FitModel(Sphere *self, ISTFLOAT data[3])
 {
 	struct sphere *s;
 
 	s = (struct sphere *)self;
-	RecieveData(&s->model, x, y, z);
+	RecieveData(&s->model, data);
 	if (!GetAvailableVectorNum(&s->model)) {
 		goto EXIT;
 	}
@@ -367,11 +367,13 @@ EXIT:
 	return ISTFALSE;
 }
 
-ISTVOID Reset(struct sphere *s)
+ISTVOID Reset(Sphere *self)
 {
+	struct sphere *s;
 	struct sphere_model *model;
 	ISTSHORT i, j;
 
+	s = (struct sphere *)self;
 	model = &s->model;
 	for (i = 0; i < IST_SPHERE_DATAMAX; ++i) {
 		for (j = 0; j < 3; ++j) {
@@ -390,7 +392,7 @@ ISTVOID Reset(struct sphere *s)
 	s->is_enable = ISTFALSE;
 }
 
-Sphere *New()
+Sphere *New(ISTVOID)
 {
 	struct sphere *s;
 
@@ -402,7 +404,7 @@ Sphere *New()
 	s->pub = ThisClass;
 	s->pub.IsObject = ISTTRUE;
 	s->FitModel = FitModel;
-	Reset(s);
+	Reset((Sphere *)s);
 	return (Sphere *)s;
 
 EXIT:
@@ -425,19 +427,26 @@ EXIT:
 	return;
 }
 
-ISTBOOL Process(Sphere *self, ISTFLOAT x, ISTFLOAT y, ISTFLOAT z)
+ISTBOOL Process(Sphere *self, ISTFLOAT data[3])
 {
 	struct sphere *s;
 	ISTBOOL res;
+	ISTSHORT i;
 
 	if (!self || self->IsObject == ISTFALSE) {
 		goto EXIT;
 	}
 	s = (struct sphere *)self;
 	if (s->is_enable) {
-		res = s->FitModel(self, x, y, z);
-		if (res && !s->is_valid) {
-			s->is_valid = ISTTRUE;
+		res = s->FitModel(self, data);
+		if (res) {
+			for (i = 0; i < 3; ++i) {
+				self->Bias[i] = s->model.mean[i];
+			}
+			self->Radius = s->model.rad;
+			if (!s->is_valid) {
+				s->is_valid = ISTTRUE;
+			}
 		}
 	}
 	return s->is_valid;
@@ -460,44 +469,6 @@ EXIT:
 	return;
 }
 
-ISTBOOL GetBias(Sphere *self, ISTFLOAT bais[3])
-{
-	struct sphere *s;
-	ISTSHORT i;
-
-	if (!self || self->IsObject == ISTFALSE) {
-		goto EXIT;
-	}
-	s = (struct sphere *)self;
-	if (!s->is_valid) {
-		goto EXIT;
-	}
-	for (i = 0; i < 3; ++i) {
-		bais[i] = s->model.mean[i];
-	}
-	return ISTTRUE; 
-
-EXIT:
-	return ISTFALSE;
-}
-
-ISTFLOAT GetRadius(Sphere *self)
-{
-	struct sphere *s;
-
-	if (!self || self->IsObject == ISTFALSE) {
-		goto EXIT;
-	}
-	s = (struct sphere *)self;
-	if (!s->is_valid) {
-		goto EXIT;
-	}
-	return s->model.rad; 
-
-EXIT:
-	return 0;
-}
-
 ISTVOID Enable(Sphere *self)
 {
 	struct sphere *s;
@@ -515,32 +486,29 @@ EXIT:
 
 ISTVOID Disable(Sphere *self)
 {
-	struct sphere *s;
-
 	if (!self || self->IsObject == ISTFALSE) {
 		goto EXIT;
 	}
-	s = (struct sphere *)self;
-	Reset(s);
+	Reset(self);
 	return;
 
 EXIT:
 	return;
 }
 
-Sphere * IST_Sphere()
+Sphere * IST_Sphere(ISTVOID)
 {
 	if (!This) {
 		ThisClass.IsObject = ISTFALSE;
 		ThisClass.New = New;
 		ThisClass.Delete = Delete;
 		ThisClass.Process = Process;
-		ThisClass.GetRadius = GetRadius;
 		ThisClass.SetRadiusMin = SetRadiusMin;
-		ThisClass.GetBias = GetBias;
 		ThisClass.Enable = Enable;
 		ThisClass.Disable = Disable;
 		This = &ThisClass;
 	}
 	return This;
 }
+
+#endif // IST_SPHERE

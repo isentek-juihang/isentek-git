@@ -27,7 +27,9 @@ enum {
 };
 
 enum {
-	float32_default_nan = 0xFFC00000
+	float_default_nan = 0xFFC00000,
+	float_positive_infinity = 0x7F800000,
+	float_negative_infinity = 0x8F800000
 };
 
 typedef struct {
@@ -187,11 +189,11 @@ STATIC ISTUBIT32 div64to32(ISTUBIT32 a0, ISTUBIT32 a1, ISTUBIT32 b)
 
 STATIC ISTUBIT32 sqrt32(ISTSBIT16 exp, ISTUBIT32 a)
 {
-	static const ISTSBIT16 sqrtoa[] = { /* square odd adjustment */
+	STATIC CONST ISTSBIT16 sqrtoa[] = { /* square odd adjustment */
 		0x0004, 0x0022, 0x005D, 0x00B1, 0x011D, 0x019F, 0x0236, 0x02E0,
 		0x039C, 0x0468, 0x0545, 0x0631, 0x072B, 0x0832, 0x0946, 0x0A67
 	};
-	static const ISTSBIT16 sqrtea[] = { /* square even adjustment */
+	STATIC CONST ISTSBIT16 sqrtea[] = { /* square even adjustment */
 		0x0A2D, 0x08AF, 0x075A, 0x0629, 0x051A, 0x0429, 0x0356, 0x029E,
 		0x0200, 0x0179, 0x0109, 0x00AF, 0x0068, 0x0034, 0x0012, 0x0002
 	};
@@ -215,7 +217,7 @@ STATIC ISTUBIT32 sqrt32(ISTSBIT16 exp, ISTUBIT32 a)
 STATIC ISTSBIT8 clz(ISTUBIT32 a)
 {
 #ifdef IST_CLZ_TABLE
-	static const ISTSBIT8 clz_table[32] = {
+	STATIC CONST ISTSBIT8 clz_table[32] = {
 		0, 9, 1, 10, 13, 21, 2, 29, 11, 14, 16, 18, 22, 25, 3, 30,
 		8, 12, 20, 28, 15, 17, 24, 7, 19, 27, 23, 6, 26, 5, 4, 31
 	};
@@ -230,7 +232,7 @@ STATIC ISTSBIT8 clz(ISTUBIT32 a)
 	a |= a >> 16;
 	return 31 - clz_table[(a * 0x07c4acddU) >> 27];
 #else
-	static const ISTSBIT8 clz_high[] = {
+	STATIC CONST ISTSBIT8 clz_high[] = {
 		8, 7, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4,
 		3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 		2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -469,7 +471,7 @@ STATIC ISTFLOAT align_sub(ISTFLOAT a, ISTFLOAT b, ISTSBIT8 sign)
 		if (manta | mantb)
 			return (propagate_nan(a, b));
 		float_raise(float_flag_invalid);
-		return (float32_default_nan);
+		return (float_default_nan);
 	}
 	if (expa == 0) {
 		expa = 1;
@@ -562,7 +564,7 @@ ISTFLOAT float_mul(ISTFLOAT a, ISTFLOAT b)
 		}
 		if ((expb | mantb) == 0) {
 			float_raise(float_flag_invalid);
-			return (float32_default_nan);
+			return (float_default_nan);
 		}
 		return (pack(signz, 0xFF, 0));
 	}
@@ -571,7 +573,7 @@ ISTFLOAT float_mul(ISTFLOAT a, ISTFLOAT b)
 			return (propagate_nan(a, b));
 		if ((expa | manta) == 0) {
 			float_raise(float_flag_invalid);
-			return (float32_default_nan);
+			return (float_default_nan);
 		}
 		return (pack(signz, 0xFF, 0));
 	}
@@ -620,7 +622,7 @@ ISTFLOAT float_div(ISTFLOAT a, ISTFLOAT b)
 			if (mantb)
 				return (propagate_nan(a, b));
 			float_raise(float_flag_invalid);
-			return (float32_default_nan);
+			return (float_default_nan);
 		}
 		return (pack(signz, 0xFF, 0));
 	}
@@ -633,7 +635,7 @@ ISTFLOAT float_div(ISTFLOAT a, ISTFLOAT b)
 		if (mantb == 0) {
 			if ((expa | manta) == 0) {
 				float_raise(float_flag_invalid);
-				return (float32_default_nan);
+				return (float_default_nan);
 			}
 			float_raise(float_flag_divbyzero);
 			return (pack(signz, 0xFF, 0));
@@ -677,7 +679,7 @@ INLINE ISTFLOAT float_fast_inverse_sqrt(ISTFLOAT a)
 	ISTUBIT32 i;
 	ISTFLOAT x2;
 	ISTFLOAT y;
-	const ISTFLOAT threehalfs = frac_to_float(3, 2);
+	CONST ISTFLOAT threehalfs = frac_to_float(3, 2);
 
 	x2 = float_mul(a, frac_to_float(1, 2));
 	y = a;
@@ -713,13 +715,13 @@ ISTFLOAT float_sqrt(ISTFLOAT a)
 		if (!signa)
 			return (a);
 		float_raise(float_flag_invalid);
-		return (float32_default_nan);
+		return (float_default_nan);
 	}
 	if (signa) {
 		if ((expa | manta) == 0)
 			return (a);
 		float_raise(float_flag_invalid);
-		return (float32_default_nan);
+		return (float_default_nan);
 	}
 	if (expa == 0) {
 		if (manta == 0)
@@ -807,20 +809,20 @@ ISTFLOAT float_copysign(ISTFLOAT a, ISTFLOAT b)
 
 ISTFLOAT float_atan(ISTFLOAT x)
 {
-	static ISTFLOAT p[4] = {
+	STATIC ISTFLOAT p[4] = {
 		0xC15B0533,
 		0xC1A40BFE,
 		0xC107E9FB,
 		0xBF566BD7
 	};
-	static ISTFLOAT q[5] = {
+	STATIC ISTFLOAT q[5] = {
 		0x422443E6,
 		0x42AC5090,
 		0x426E5052,
 		0x4170624F,
 		0x3F800000
 	};
-	static ISTFLOAT a[4] = {
+	STATIC ISTFLOAT a[4] = {
 		0,
 		0x3F060A92,  /* pi/6 */
 		0x3FC90FDB,
@@ -881,5 +883,410 @@ ISTFLOAT float_atan2(ISTFLOAT y, ISTFLOAT x)
 		return float_sub(val, float_pi());    /* val - pi */
 	return float_add(val, float_pi());    /* val + pi */
 }
+
+#if defined(IST_FLOOR)
+ISTFLOAT float_round_to_int(ISTFLOAT a, ISTSBIT8 mode)
+{
+	ISTSBIT8 sign = _s(a);
+	ISTSBIT16 exp = _e(a);
+	ISTUBIT32 lmask;
+	ISTUBIT32 rmask;
+	ISTFLOAT z;
+
+	if (0x96 <= exp) {
+		if ((exp == 0xFF) && _m(a)) {
+			return propagate_nan(a, a);
+		}
+		return a;
+	}
+	if (exp <= 0x7E) {
+		if ((ISTUBIT32)(a << 1) == 0) {
+			return a;
+		}
+		float_exception_flags |= float_flag_inexact;
+		switch (mode) {
+		case float_round_nearest_even:
+			if ((exp == 0x7E) && _m(a)) {
+				return round_pack(sign, 0x7F, 0);
+			}
+			break;
+		case float_round_down:
+			return sign ? 0xBF800000 : 0;
+		case float_round_up:
+			return sign ? 0x80000000 : 0x3F800000;
+		}
+		return round_pack(sign, 0, 0);
+	}
+	lmask = 1;
+	lmask <<= 0x96 - exp;
+	rmask = lmask - 1;
+	z = a;
+	//mode = float_rounding_mode;
+	if (mode == float_round_nearest_even) {
+		z += lmask >> 1;
+		if ((z & rmask) == 0) {
+			z &= ~ lmask;
+		}
+	} else if (mode != float_round_to_zero) {
+		if (_s(z) ^ (mode == float_round_up)) {
+			z += rmask;
+		}
+	}
+	z &= ~ rmask;
+	if (z != a) {
+		float_exception_flags |= float_flag_inexact;
+	}
+	return z;
+}
+#endif // IST_FLOOR
+
+#ifdef IST_FLOOR
+ISTFLOAT float_floor(ISTFLOAT a)
+{
+	ISTFLOAT r = float_round_to_int(a, float_round_down);
+	if (float_le(r, 0)) {
+		return float_add(r, (float_le(r, a) ? 0 : float_negate(float_one())));
+	}
+	return r;
+}
+#endif // IST_FLOOR
+
+#if defined(IST_EXP) || defined(IST_ASIN) || defined(IST_ACOS)
+INLINE ISTFLOAT float_ldexp(ISTFLOAT a, ISTINT pw2)
+{
+	return (((((a >> 23) & 0x000000FF) + pw2) & 0xFF) << 23) | (a & 0x807FFFFF);
+}
+#endif // IST_EXP || IST_ASIN || IST_ACOS
+
+#ifdef IST_EXP
+ISTFLOAT float_exp(ISTFLOAT a)
+{
+#define EXP_P(z) float_add(float_mul(P1, z), P0)
+#define EXP_Q(z) float_add(float_mul(Q1, z), Q0)
+	STATIC CONST ISTFLOAT P0 = 0x3E800000; // 0.2499999995E+0
+	STATIC CONST ISTFLOAT P1 = 0x3B885308; // 0.4160288626E-2
+	STATIC CONST ISTFLOAT Q0 = 0x3F000000; // 0.5000000000E+0
+	STATIC CONST ISTFLOAT Q1 = 0x3D4CBF5B; // 0.4998717877E-1
+	STATIC CONST ISTFLOAT C1 = 0x3F318000; // 0.693359375
+	STATIC CONST ISTFLOAT C2 = 0xB95E8083; // -2.1219444005469058277e-4
+	STATIC CONST ISTFLOAT BIGX = 0x42B17218; // ln(HUGE_VALF)
+	STATIC CONST ISTFLOAT EXPEPS = 0x33D6BF95;	// exp(1.0E-7)=0.0000001
+	STATIC CONST ISTFLOAT K1 = 0x3FB8AA3B; // 1/ln(2) = 1.4426950409
+	STATIC CONST ISTFLOAT HUGE_VALF = 0x7F7FFFFF; // 3.402823466e+38 
+	ISTSBIT8 signa = _s(a);
+	ISTSBIT16 expa = _e(a);
+	ISTUBIT32 manta = _m(a);
+	ISTINT n;
+	ISTFLOAT an;
+	ISTFLOAT g;
+	ISTFLOAT r;
+	ISTFLOAT z;
+	ISTFLOAT y;
+	ISTSBIT8 sign;
+
+	if (expa == 0xFF) {
+		if (manta)
+			return (propagate_nan(a, 0));
+		if (!signa)
+			return (a);
+		float_raise(float_flag_invalid);
+		return (float_default_nan);
+	}
+	if (float_lt(a, 0)) { 
+		y = float_negate(a); 
+		sign = 1; 
+	} else {
+		y = a;
+		sign = 0;
+	}
+	if (float_lt(y, EXPEPS)) {
+		return float_one();
+	}
+	if (!float_le(y, BIGX)) {
+		if (sign) {
+#ifdef IST_OS_WIN32
+			return 0;
+#else // IST_OS_WIN32
+			return HUGE_VALF;
+#endif // IST_OS_WIN32
+		} else {
+			return 0;
+		}
+	}
+	z = float_mul(y, K1);
+	n = float_to_int(z);
+	if (float_lt(n, 0)) {
+		--n;
+	}
+	if (!float_lt(float_sub(z, n), Q0)) {
+		++n;
+	}
+	an = int_to_float(n);
+	g = float_sub(float_sub(y, float_mul(an, C1)), float_mul(an, C2));
+	z = float_mul(g, g);
+	r = float_mul(EXP_P(z), g);
+	r = float_add(Q0, float_div(r, float_sub(EXP_Q(z), r)));
+	n++;
+	z = float_ldexp(r, n);
+	if (sign) {
+		return float_div(float_one(), z);
+	}
+	return z;
+}
+#endif // IST_EXP
+
+#ifdef IST_TAN
+INLINE ISTFLOAT float_tancot(ISTFLOAT x, ISTBOOL iscotan)
+{
+#define TAN_P(f,g) float_add(float_mul(float_mul(P1,g),f),f)
+#define TAN_Q(g) float_add(float_mul(float_add(float_mul(Q2,g),Q1),g),Q0)
+	STATIC CONST ISTFLOAT P0 = 0x3F800000; // 0.100000000E+1
+	STATIC CONST ISTFLOAT P1 = 0xBDC433B8; // -0.958017723E-1
+	STATIC CONST ISTFLOAT Q0 = 0x3F800000; // 0.100000000E+1
+	STATIC CONST ISTFLOAT Q1 = 0xBEDBB7AF; // -0.429135777E+0
+	STATIC CONST ISTFLOAT Q2 = 0x3C1F3375; // 0.971685835E-2
+	STATIC CONST ISTFLOAT C1 = 0x3FC90000; // 1.5703125
+	STATIC CONST ISTFLOAT C2 = 0x39FDAA22; // 4.83826794897E-4
+	STATIC CONST ISTFLOAT YMAX = 0x45C90800; // 6433.0 A reasonable choice for YMAX is the integer part of B**(t/2)*PI/2:
+	STATIC CONST ISTFLOAT TWO_O_PI = 0x3F22F983; // 0.6366197724
+	ISTFLOAT f;
+	ISTFLOAT g;
+	ISTFLOAT xn;
+	ISTFLOAT xnum;
+	ISTFLOAT xden;
+	ISTINT n;
+
+	if (!float_le(float_abs(x), YMAX)) {
+		float_raise(float_flag_invalid);
+		return 0;
+	}
+	/*Round x*2*PI to the nearest integer*/
+	n = float_to_int(float_add(float_mul(x, TWO_O_PI), ((! float_le(x, 0)) ? 0x3F000000 : 0xBF000000))); /*works for +-x*/
+	xn = int_to_float(n);
+	xnum = int_to_float(float_to_int(x));
+	xden = float_sub(x, xnum);
+	f = float_sub(float_add(float_sub(xnum, float_mul(xn, C1)), xden), float_mul(xn, C2));
+	if (float_lt(float_abs(f), float_eps())) {
+		xnum = f;
+		xden = float_one();
+	} else {
+		g = float_mul(f, f);
+		xnum = TAN_P(f,g);
+		xden = TAN_Q(g);
+	}
+	if (n & 1) { //xn is odd
+		if (iscotan) {
+			return float_negate(float_div(xnum, xden));
+		}
+		return float_negate(float_div(xden, xnum));
+	}
+	if (iscotan) {
+		return float_div(xden, xnum);
+	}
+	return float_div(xnum, xden);
+}
+
+ISTFLOAT float_tan(ISTFLOAT a)
+{
+	return float_tancot(a, ISTFALSE);
+}
+#endif // IST_TAN
+
+#if defined(IST_SIN) || defined(IST_COS)
+INLINE ISTFLOAT float_sincos(ISTFLOAT x, ISTBOOL iscos)
+{
+	STATIC CONST ISTFLOAT r1 = 0xBE2AAAA4; // -0.1666665668E+0
+	STATIC CONST ISTFLOAT r2 = 0x3C08873E; // 0.8333025139E-2
+	STATIC CONST ISTFLOAT r3 = 0xB94FB222; // -0.1980741872E-3
+	STATIC CONST ISTFLOAT r4 = 0x362E9C5B; // 0.2601903036E-5
+	STATIC CONST ISTFLOAT C1 = 0x40490000; // 3.140625
+	STATIC CONST ISTFLOAT C2 = 0x3A7DAA22; // 9.676535897E-4
+	STATIC CONST ISTFLOAT YMAX = 0x46490C00; // 12867.0
+	STATIC CONST ISTFLOAT HALF_PI = 0x3FC90FDB;// 1.5707963268 
+	STATIC CONST ISTFLOAT iPI = 0x3EA2F983; // 0.3183098862
+	STATIC CONST ISTFLOAT EPS2 = 0x337FFFF3; // 59.6046E-9
+	ISTFLOAT y;
+	ISTFLOAT f;
+	ISTFLOAT r;
+	ISTFLOAT g;
+	ISTFLOAT XN;
+	ISTINT N;
+	ISTBOOL sign;
+
+	if (iscos) {
+		y = float_add(float_abs(x), HALF_PI);
+		sign = ISTFALSE;
+	} else {
+		if (float_lt(x, 0)) {
+			y = float_negate(x);
+			sign = ISTTRUE;
+		} else {
+			y = x;
+			sign = ISTFALSE;
+		}
+	}
+	if (!float_le(y, YMAX)) {
+		float_raise(float_flag_invalid);
+		return 0;
+	}
+	/*Round y/PI to the nearest integer*/
+	N = float_to_int(float_add(float_mul(y, iPI), 0x3F000000));
+	/*If N is odd change sign*/
+	if (N & 1) {
+		sign = !sign;
+	}
+	XN = int_to_float(N);
+	/*Cosine required? (is done here to keep accuracy)*/
+	if (iscos) {
+		XN = float_sub(XN, 0x3F000000);
+	}
+	y = float_abs(x);
+	r = int_to_float(float_to_int(y));
+	g = float_sub(y, r);
+	f = float_sub(float_add(float_sub(r, float_mul(XN, C1)), g), float_mul(XN, C2));
+	g = float_mul(f, f);
+	if (!float_le(g, EPS2)) { //Used to be if(fabsf(f)>EPS)
+		r = float_mul(float_add(float_mul(float_add(float_mul(float_add(float_mul(r4, g), r3), g), r2), g), r1), g);
+		f = float_add(f, float_mul(f, r));
+	}
+	return (sign ? float_negate(f) : f);
+}
+#endif // IST_SIN || IST_COS
+
+#ifdef IST_SIN
+ISTFLOAT float_sin(ISTFLOAT a)
+{
+	ISTSBIT8 signa = _s(a);
+	ISTSBIT16 expa = _e(a);
+	ISTUBIT32 manta = _m(a);
+
+	if (expa == 0xFF) {
+		if (manta) {
+			return (propagate_nan(a, 0));
+		}
+		if (!signa) {
+			return (a);
+		}
+		float_raise(float_flag_invalid);
+		return (float_default_nan);
+	}
+	if (float_eq(a, 0)) {
+		return 0;
+	}
+	return float_sincos(a, ISTFALSE);
+}
+#endif // IST_SIN
+
+#ifdef IST_COS
+ISTFLOAT float_cos(ISTFLOAT a)
+{
+	ISTSBIT8 signa = _s(a);
+	ISTSBIT16 expa = _e(a);
+	ISTUBIT32 manta = _m(a);
+
+	if (expa == 0xFF) {
+		if (manta) {
+			return (propagate_nan(a, 0));
+		}
+		if (!signa) {
+			return (a);
+		}
+		float_raise(float_flag_invalid);
+		return (float_default_nan);
+	}
+	if (float_eq(a, 0)) {
+		return float_one();
+	}
+	return float_sincos(a, ISTTRUE);
+}
+#endif // IST_COS
+
+#if defined(IST_ASIN) || defined(IST_ACOS)
+INLINE ISTFLOAT float_asincos(ISTFLOAT x, ISTBOOL isacos)
+{
+#define ASINCOS_P(g) float_add(float_mul(P2,g),P1)
+#define ASINCOS_Q(g) float_add(float_mul(float_add(float_mul(Q2,g),Q1),g),Q0)
+	STATIC CONST ISTFLOAT P1 = 0x3F6F166B; // 0.933935835E+0
+	STATIC CONST ISTFLOAT P2 = 0xBF012065; // -0.504400557E+0
+	STATIC CONST ISTFLOAT Q0 = 0x40B350F0; // 0.560363004E+1
+	STATIC CONST ISTFLOAT Q1 = 0xC0B18D0B; // -0.554846723E+1
+	STATIC CONST ISTFLOAT Q2 = 0x3F800000; // 0.100000000E+1
+	STATIC CONST ISTFLOAT EPS = 0x39800000; // 244.14062E-6
+	ISTFLOAT y;
+	ISTFLOAT g;
+	ISTFLOAT r;
+	ISTUCHAR i;
+	ISTBOOL quartPI = isacos;
+	STATIC CONST ISTFLOAT a[2] = { 0, 0x3F490FDB };
+	STATIC CONST ISTFLOAT b[2] = { 0x3FC90FDB, 0x3F490FDB };
+
+	y = float_abs(x);
+	if (float_lt(y, EPS)) {
+		r = y;
+	} else {
+		if (!float_le(y, 0x3F000000)) {
+			quartPI = !isacos;
+			if (!float_le(y, float_one())) {
+				float_raise(float_flag_invalid);
+				return 0;
+			}
+			g = float_add(float_sub(0x3F000000, y), 0x3F000000);
+			g = float_ldexp(g, -1);
+			y = float_sqrt(g);
+			y = float_negate(float_add(y, y));
+		} else {
+			g = float_mul(y, y);
+		}
+		r = float_add(y, float_mul(y, float_div(float_mul(ASINCOS_P(g), g), ASINCOS_Q(g))));
+	}
+	i = quartPI;
+	if (isacos) {
+		if (float_lt(x, 0)) {
+			r = float_add(float_add(b[i], r), b[i]);
+		} else {
+			r = float_add(float_sub(a[i], r), a[i]);
+		}
+	} else {
+		r = float_add(float_add(a[i], r), a[i]);
+		if (float_lt(x, 0)) {
+			r = float_negate(r);
+		}
+	}
+	return r;
+}
+#endif // IST_ASIN || IST_ACOS
+
+#ifdef IST_ASIN
+ISTFLOAT float_asin(ISTFLOAT a)
+{
+	STATIC CONST ISTFLOAT HALF_PI = 0x3FC90FDB;// 1.5707963268 
+
+	if (float_eq(a, float_one())) {
+		return HALF_PI;
+	} else if (float_eq(a, float_negate(float_one()))) {
+		return float_negate(HALF_PI);
+	} else if (float_eq(a, 0)) {
+		return 0;
+	}
+	return float_asincos(a, ISTFALSE);
+}
+#endif // IST_ASIN
+
+#ifdef IST_ACOS
+ISTFLOAT float_acos(ISTFLOAT a)
+{
+	STATIC CONST ISTFLOAT HALF_PI = 0x3FC90FDB; // 1.5707963268 
+	STATIC CONST ISTFLOAT PI = 0x40490FDB; // 3.1415926536 
+
+	if (float_eq(a, float_one())) { 
+		return 0;
+	}else if (float_eq(a, float_negate(float_one()))) {
+		return PI;
+	} else if (float_eq(a, 0)) { 
+		return HALF_PI;
+	}
+	return float_asincos(a, ISTTRUE);
+}
+#endif // IST_ACOS
 
 #endif // IST_FLOAT_IEEE754

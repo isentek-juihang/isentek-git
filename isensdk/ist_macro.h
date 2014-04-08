@@ -22,10 +22,10 @@
 //** ------------------------------------------------------------------------
 //** Disable compiler warning
 //** ------------------------------------------------------------------------
-#define IST_UNUSED(x)   (ISTVOID)(x)
+#define IST_UNUSED(x)   ((ISTVOID)(x))
 
 //** ------------------------------------------------------------------------
-//** INLINE macro
+//** Convenient macro
 //** -----------------------------------------------------------------------
 #ifndef INLINE
 #  if defined(IST_COMPILER_GCC)
@@ -39,6 +39,18 @@
 
 #ifndef STATIC
 #  define STATIC static
+#endif
+
+#ifndef CONST
+#  define CONST const
+#endif
+
+#ifndef IST_WEAK
+#  define IST_WEAK
+#endif
+
+#ifndef IST_STRONG
+#  define IST_STRONG
 #endif
 
 #endif // IST_MACRO_H_INCLUDED
