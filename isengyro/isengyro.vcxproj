@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EA839344-1146-44BF-B442-BB489E797622}</ProjectGuid>
+    <RootNamespace>isengyro</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../isensdk/;$(ProjectDir)SensorDrivers/include/;$(ProjectDir);$(ProjectDir)GUI/;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/wd4305 %(AdditionalOptions)</AdditionalOptions>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;msvcrtd.lib;mfc100u.lib;</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>uafxcwd.lib;Libcmtd.lib;./LIB/iowkit.lib;./LIB/MyUtilityLib.lib;./LIB/iSenInterfaceLib.lib</AdditionalDependencies>
+      <LargeAddressAware>false</LargeAddressAware>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>../isensdk/;$(ProjectDir)SensorDrivers/include/;$(ProjectDir);$(ProjectDir)GUI/;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/wd4305 %(AdditionalOptions)</AdditionalOptions>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>uafxcw.lib;Libcmt.lib;./LIB/iowkit.lib;./LIB/MyUtilityLib.lib;./LIB/iSenInterfaceLib.lib</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;mfc110u.lib;mfcs110u.lib;</IgnoreSpecificDefaultLibraries>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="res\bk.bmp" />
+    <None Include="res\iSensors.ico" />
+    <None Include="res\iSensors.rc2" />
+    <None Include="res\treeicon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\isensdk\ist_accel.h" />
+    <ClInclude Include="..\isensdk\ist_alma.h" />
+    <ClInclude Include="..\isensdk\ist_bqdlpf.h" />
+    <ClInclude Include="..\isensdk\ist_config.h" />
+    <ClInclude Include="..\isensdk\ist_debug.h" />
+    <ClInclude Include="..\isensdk\ist_ellipsoid.h" />
+    <ClInclude Include="..\isensdk\ist_errno.h" />
+    <ClInclude Include="..\isensdk\ist_fifo.h" />
+    <ClInclude Include="..\isensdk\ist_float.h" />
+    <ClInclude Include="..\isensdk\ist_fusion.h" />
+    <ClInclude Include="..\isensdk\ist_hardiron.h" />
+    <ClInclude Include="..\isensdk\ist_ieee754.h" />
+    <ClInclude Include="..\isensdk\ist_macro.h" />
+    <ClInclude Include="..\isensdk\ist_magnet.h" />
+    <ClInclude Include="..\isensdk\ist_math.h" />
+    <ClInclude Include="..\isensdk\ist_milieu.h" />
+    <ClInclude Include="..\isensdk\ist_mma.h" />
+    <ClInclude Include="..\isensdk\ist_prep.h" />
+    <ClInclude Include="..\isensdk\ist_qft.h" />
+    <ClInclude Include="..\isensdk\ist_rma.h" />
+    <ClInclude Include="..\isensdk\ist_rotation.h" />
+    <ClInclude Include="..\isensdk\ist_sma.h" />
+    <ClInclude Include="..\isensdk\ist_softiron.h" />
+    <ClInclude Include="..\isensdk\ist_sphere.h" />
+    <ClInclude Include="..\isensdk\ist_types.h" />
+    <ClInclude Include="..\isensdk\ist_wma.h" />
+    <ClInclude Include="acceleration_calibration.h" />
+    <ClInclude Include="GsensorCalibration.h" />
+    <ClInclude Include="guicon.h" />
+    <ClInclude Include="GUI\Waveform\WaveformCtrl.h" />
+    <ClInclude Include="I2cMasterOperation.h" />
+    <ClInclude Include="Interface\I2C\aardvark\aardvark.h" />
+    <ClInclude Include="Interface\I2C\aardvark\AardvarkClass.h" />
+    <ClInclude Include="Interface\I2C\IOW\IowClass.h" />
+    <ClInclude Include="Interface\I2C\IOW\iowkit.h" />
+    <ClInclude Include="Interface\I2C\ISenI2cMaster.h" />
+    <ClInclude Include="Interface\iSenInterfaceLinker.h" />
+    <ClInclude Include="iSensors.h" />
+    <ClInclude Include="iSensorsDlg.h" />
+    <ClInclude Include="MyUtility.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SAPrefsStatic.h" />
+    <ClInclude Include="SAPrefsSubDlg.h" />
+    <ClInclude Include="SATreeCtrl.h" />
+    <ClInclude Include="SensorDrivers\include\Dmard08Driver.h" />
+    <ClInclude Include="SensorDrivers\include\Ist8301Driver.h" />
+    <ClInclude Include="SensorDrivers\include\Kxtf9Driver.h" />
+    <ClInclude Include="SensorDrivers\include\L3g4200dDriver.h" />
+    <ClInclude Include="SensorDrivers\include\SensorBase.h" />
+    <ClInclude Include="SensorDrivers\include\Sensors.h" />
+    <ClInclude Include="SensorsHeader.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SubDlgs\Accelerometer\SubDlgAccelerometer.h" />
+    <ClInclude Include="SubDlgs\Accelerometer\SubDlgAccelerometerApp.h" />
+    <ClInclude Include="SubDlgs\Accelerometer\SubDlgAccelerometerData.h" />
+    <ClInclude Include="SubDlgs\Compass\SubDlgCompass.h" />
+    <ClInclude Include="SubDlgs\Gyroscope\SubDlgGyroscope.h" />
+    <ClInclude Include="SubDlgs\Gyroscope\SubDlgGyroscopeApp.h" />
+    <ClInclude Include="SubDlgs\Gyroscope\SubDlgGyroscopeData.h" />
+    <ClInclude Include="SubDlgs\Magnetometer\SubDlgMagnetometer.h" />
+    <ClInclude Include="SubDlgs\Magnetometer\SubDlgMagnetometerApp.h" />
+    <ClInclude Include="SubDlgs\Magnetometer\SubDlgMagnetometerData.h" />
+    <ClInclude Include="SubDlgs\SubDlgsHeader.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="typedefs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\isensdk\ist_accel.c" />
+    <ClCompile Include="..\isensdk\ist_alma.c" />
+    <ClCompile Include="..\isensdk\ist_bqdlpf.c" />
+    <ClCompile Include="..\isensdk\ist_debug.c" />
+    <ClCompile Include="..\isensdk\ist_ellipsoid.c" />
+    <ClCompile Include="..\isensdk\ist_errno.c" />
+    <ClCompile Include="..\isensdk\ist_fifo.c" />
+    <ClCompile Include="..\isensdk\ist_fusion.c" />
+    <ClCompile Include="..\isensdk\ist_hardiron.c" />
+    <ClCompile Include="..\isensdk\ist_ieee754.c" />
+    <ClCompile Include="..\isensdk\ist_magnet.c" />
+    <ClCompile Include="..\isensdk\ist_milieu.c" />
+    <ClCompile Include="..\isensdk\ist_mma.c" />
+    <ClCompile Include="..\isensdk\ist_rma.c" />
+    <ClCompile Include="..\isensdk\ist_rotation.c" />
+    <ClCompile Include="..\isensdk\ist_sma.c" />
+    <ClCompile Include="..\isensdk\ist_softiron.c" />
+    <ClCompile Include="..\isensdk\ist_sphere.c" />
+    <ClCompile Include="..\isensdk\ist_wma.c" />
+    <ClCompile Include="acceleration_calibration.c" />
+    <ClCompile Include="guicon.cpp" />
+    <ClCompile Include="GUI\Waveform\WaveformCtrl.cpp" />
+    <ClCompile Include="I2cMasterOperation.cpp" />
+    <ClCompile Include="iSensors.cpp" />
+    <ClCompile Include="iSensorsDlg.cpp" />
+    <ClCompile Include="iSensorsDlgGUI.cpp" />
+    <ClCompile Include="iSensorsDlgMenu.cpp" />
+    <ClCompile Include="SAPrefsStatic.cpp" />
+    <ClCompile Include="SAPrefsSubDlg.cpp" />
+    <ClCompile Include="SATreeCtrl.cpp" />
+    <ClCompile Include="SensorDrivers\accelerometer\Domintech\Dmard08Driver.cpp" />
+    <ClCompile Include="SensorDrivers\accelerometer\Kionix\Kxtf9Driver.cpp" />
+    <ClCompile Include="SensorDrivers\gyroscope\ST\L3g4200dDriver.cpp" />
+    <ClCompile Include="SensorDrivers\magnetmeter\iSenTek\Ist8301Driver.cpp" />
+    <ClCompile Include="SensorDrivers\SensorBase.cpp" />
+    <ClCompile Include="SensorFusion.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SubDlgs\Accelerometer\SubDlgAccelerometer.cpp" />
+    <ClCompile Include="SubDlgs\Accelerometer\SubDlgAccelerometerApp.cpp" />
+    <ClCompile Include="SubDlgs\Accelerometer\SubDlgAccelerometerData.cpp" />
+    <ClCompile Include="SubDlgs\Compass\SubDlgCompass.cpp" />
+    <ClCompile Include="SubDlgs\Gyroscope\SubDlgGyroscope.cpp" />
+    <ClCompile Include="SubDlgs\Gyroscope\SubDlgGyroscopeApp.cpp" />
+    <ClCompile Include="SubDlgs\Gyroscope\SubDlgGyroscopeData.cpp" />
+    <ClCompile Include="SubDlgs\Magnetometer\SubDlgMagnetometer.cpp" />
+    <ClCompile Include="SubDlgs\Magnetometer\SubDlgMagnetometerApp.cpp" />
+    <ClCompile Include="SubDlgs\Magnetometer\SubDlgMagnetometerData.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="iSensors.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="iSensors.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
