@@ -19,6 +19,7 @@ struct _Rotation {
 	IST_READ ISTFLOAT Matrix[3][3];
 	IST_READ ISTFLOAT Quaternion[4]; // [ x, y, z, w ]
 	IST_READ ISTFLOAT Velocity[3];
+	IST_READWRITE ISTBOOL IsMagnetVelocity;
 };
 
 Rotation *IST_Rotation(ISTVOID);

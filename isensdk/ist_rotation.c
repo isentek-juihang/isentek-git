@@ -470,6 +470,14 @@ INLINE ISTVOID ComputeVelocityFromMatrix(Rotation *self)
 	ISTFLOAT r[3][3];
 	ISTSHORT i, j;
 
+#ifndef IST_MAGNET_VELOCITY
+	self->IsMagnetVelocity = ISTFALSE;
+#endif // IST_MAGNET_VELOCITY
+	if (self->IsMagnetVelocity) {
+		for (i = 0; i < 3; ++i) {
+			self->Velocity[i] = s->magnet->Velocity[i];
+		}
+	} else {
 	if (s->is_inited == ISTFALSE) {
 		for (i = 0; i < 3; ++i) {
 			for (j = 0; j < 3; ++j) {
@@ -500,6 +508,7 @@ INLINE ISTVOID ComputeVelocityFromMatrix(Rotation *self)
 		self->Velocity[1] = _neg(_div(_mul(_frac(1, 2), _sub(r[0][2], r[2][0])), s->dT));
 		self->Velocity[2] = _neg(_div(_mul(_frac(1, 2), _sub(r[1][0], r[0][1])), s->dT));
 	}
+	}
 	return;
 
 EXIT:
@@ -524,6 +533,7 @@ Rotation *New(ISTVOID)
 	ist_memset(s, 0, sizeof(*s));
 	s->pub = ThisClass;
 	s->pub.IsObject = ISTTRUE;
+	s->pub.IsMagnetVelocity = ISTFALSE;
 	s->dT = _frac(1, IST_ROTATION_HZ);
 #ifdef IST_ROTATION_FILTERED
 	s->NewFilters = NewFilters;

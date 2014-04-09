@@ -112,15 +112,15 @@
 //**   IST_CONFIG_ROTATION_MATRIX=1, support angular calculation by rotation 
 //** matrix method. If config is not set, it is by quaternion method.
 //** ----------------------------------------------------------------------
-//#define IST_CONFIG_ROTATION 1
-//#define IST_CONFIG_ROTATION_VELOCITY 1
-//#define IST_CONFIG_ROTATION_FILTERED 1
-//#define IST_CONFIG_ROTATION_MAGNET_ALMA 1
-//#define IST_CONFIG_ROTATION_ACCEL_ALMA 1
-//#define IST_CONFIG_ROTATION_ANGULAR_ALMA 1
+#define IST_CONFIG_ROTATION 1
+#define IST_CONFIG_ROTATION_VELOCITY 1
+#define IST_CONFIG_ROTATION_FILTERED 1
+#define IST_CONFIG_ROTATION_MAGNET_ALMA 1
+#define IST_CONFIG_ROTATION_ACCEL_ALMA 1
+#define IST_CONFIG_ROTATION_ANGULAR_ALMA 1
 //#define IST_CONFIG_ROTATION_VELOCITY_ALMA 1
-//#define IST_CONFIG_ROTATION_HZ 50
-//#define IST_CONFIG_ROTATION_MATRIX 1
+#define IST_CONFIG_ROTATION_HZ 50
+#define IST_CONFIG_ROTATION_MATRIX 1
 
 //** ------------------------------------------------------------------------
 //** Filter support 

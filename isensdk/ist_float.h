@@ -62,10 +62,10 @@ IST_EXTERN_C_BEGIN
 #  ifdef IST_ACOS
 #    define float_acos acosf
 #  endif // IST_ACOS
-#  define float_pi() M_PI
-#  define float_pi_2() M_PI_2
-#  define float_pi_4() M_PI_4
-#  define float_pi_3_4() (M_PI_2 + M_PI_4)
+#  define float_pi() ((ISTFLOAT)M_PI)
+#  define float_pi_2() ((ISTFLOAT)M_PI_2)
+#  define float_pi_4() ((ISTFLOAT)M_PI_4)
+#  define float_pi_3_4() ((ISTFLOAT)(M_PI_2 + M_PI_4))
 #else
 #  error "Do not define sqrt function."
 #endif
