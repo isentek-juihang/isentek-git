@@ -60,10 +60,11 @@ void FreezeGUI(BOOL bFreeze)
 /* Output parameter¡G   negative¡G                      */
 /*                      positive¡G                      */
 /********************************************************/
-#define DEV_ID_DOMITEK	0x0001
-#define DEV_ID_ISENTEK	0x0002
-#define DEV_ID_LG3GYRO	0x0003
-#define DEV_ID_KIONIX	0x0004
+#define DEV_ID_DOMITEK      0x0001
+#define DEV_ID_ISENTEK_8301 0x0002
+#define DEV_ID_ISENTEK_8303 0x0003
+#define DEV_ID_LG3GYRO      0x0004
+#define DEV_ID_KIONIX       0x0005
 
 void DestroySensor(CSensorBase **ppSensor)
 {
@@ -90,7 +91,7 @@ CSensorBase *CreateSensor(int id, float fc, CISenI2cMaster *i2c)
 			CSensorBase::COORDINATE_SYSTEM::CONFIG_COORDINATE_AVIATION);
 	}
 
-	if (id == DEV_ID_ISENTEK) {
+	if (id == DEV_ID_ISENTEK_8301) {
 		sensor = new CIst8301Driver(CIst8301Driver::SA::SA_0E, 
 			i2c, CSensorBase::LAYOUT::CONFIG_LAYOUT_PAT_4, 
 			CSensorBase::COORDINATE_SYSTEM::CONFIG_COORDINATE_AVIATION);
@@ -105,6 +106,25 @@ CSensorBase *CreateSensor(int id, float fc, CISenI2cMaster *i2c)
 			odr = CIst8301Driver::ODR::ODR_100SPS;
 		else
 			odr = CIst8301Driver::ODR::ODR_100SPS;
+	}
+
+	if (id == DEV_ID_ISENTEK_8303) {
+		sensor = new CIst8303Driver(CIst8303Driver::SA::SA_0C, 
+			i2c, CSensorBase::LAYOUT::CONFIG_LAYOUT_PAT_2, 
+			CSensorBase::COORDINATE_SYSTEM::CONFIG_COORDINATE_AVIATION);
+
+		if (fc <= 5.0f)
+			odr = CIst8303Driver::ODR::ODR_POINT5SPS;
+		else if (fc > 5.0f && fc <= 10.0f)
+			odr = CIst8303Driver::ODR::ODR_10SPS;
+		else if (fc > 10.0f && fc <= 20.0f)
+			odr = CIst8303Driver::ODR::ODR_20SPS;
+		else if (fc > 20.0f && fc <= 50.0f)
+			odr = CIst8303Driver::ODR::ODR_50SPS;
+		else if (fc > 50.0f && fc <= 100.0f)
+			odr = CIst8303Driver::ODR::ODR_100SPS;
+		else
+			odr = CIst8303Driver::ODR::ODR_200SPS;
 	}
 
 	if (id == DEV_ID_LG3GYRO) {
@@ -226,7 +246,7 @@ DWORD WINAPI SensorFusionProc(LPVOID lpParam)
 	float tmA, tmM;
 	DWORD dwRet, dwCnt, dwStart, dwEnd, dwTimeout;
 	DWORD samples = (DWORD)(fs/mfs);
-	DWORD period = (DWORD)(2000.0f/fs);
+	DWORD period = (DWORD)(1000.0f/fs);
 	HANDLE event = NULL;
 
 	IST_DBG("+++ Enter SensorFusionProc() +++\n");
@@ -239,7 +259,7 @@ DWORD WINAPI SensorFusionProc(LPVOID lpParam)
 		goto EXIT;
 	}
 
-	magnet_sensor = CreateSensor(DEV_ID_ISENTEK, mfs, g_pMain->m_iSenI2c);
+	magnet_sensor = CreateSensor(DEV_ID_ISENTEK_8301, mfs, g_pMain->m_iSenI2c);
 	if (!magnet_sensor) {
 		IST_DBG("!magnet_sensor\n");
 		goto EXIT;

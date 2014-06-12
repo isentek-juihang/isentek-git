@@ -37,7 +37,7 @@ private:
     static const unsigned char IST8301_CNTRL2 = 0x1C;   //Control setting register 2
     static const unsigned char IST8301_CNTRL3 = 0x1D;   //Control setting register 3
 
-    #define IST8301_STAT_DRDY       1<<6
+    #define IST8301_STAT_DRDY       (1<<6)
 
     /* conversion of magnetic data to uT units */
     #define CONVERT_M                   (0.33f)

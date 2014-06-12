@@ -170,6 +170,7 @@
     <ClInclude Include="SATreeCtrl.h" />
     <ClInclude Include="SensorDrivers\include\Dmard08Driver.h" />
     <ClInclude Include="SensorDrivers\include\Ist8301Driver.h" />
+    <ClInclude Include="SensorDrivers\include\Ist8303Driver.h" />
     <ClInclude Include="SensorDrivers\include\Kxtf9Driver.h" />
     <ClInclude Include="SensorDrivers\include\L3g4200dDriver.h" />
     <ClInclude Include="SensorDrivers\include\SensorBase.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="SensorDrivers\accelerometer\Kionix\Kxtf9Driver.cpp" />
     <ClCompile Include="SensorDrivers\gyroscope\ST\L3g4200dDriver.cpp" />
     <ClCompile Include="SensorDrivers\magnetmeter\iSenTek\Ist8301Driver.cpp" />
+    <ClCompile Include="SensorDrivers\magnetmeter\iSenTek\Ist8303Driver.cpp" />
     <ClCompile Include="SensorDrivers\SensorBase.cpp" />
     <ClCompile Include="SensorFusion.cpp" />
     <ClCompile Include="stdafx.cpp">

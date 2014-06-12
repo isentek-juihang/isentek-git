@@ -13,6 +13,7 @@
 //magnetmeter
 #include "./SensorDrivers/include/Ist8301Driver.h"
 
+#include "./SensorDrivers/include/Ist8303Driver.h"
 //gyroscope
 #include "./SensorDrivers/include/L3g4200dDriver.h"
 
