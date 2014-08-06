@@ -253,13 +253,13 @@ DWORD WINAPI SensorFusionProc(LPVOID lpParam)
 
 	FreezeGUI(false);
 
-	accel_sensor = CreateSensor(DEV_ID_DOMITEK, fs, g_pMain->m_iSenI2c);
+	accel_sensor = CreateSensor(DEV_ID_KIONIX, fs, g_pMain->m_iSenI2c);
 	if (!accel_sensor) {
 		IST_DBG("!accel_sensor\n");
 		goto EXIT;
 	}
 
-	magnet_sensor = CreateSensor(DEV_ID_ISENTEK_8301, mfs, g_pMain->m_iSenI2c);
+	magnet_sensor = CreateSensor(DEV_ID_ISENTEK_8303, mfs, g_pMain->m_iSenI2c);
 	if (!magnet_sensor) {
 		IST_DBG("!magnet_sensor\n");
 		goto EXIT;
