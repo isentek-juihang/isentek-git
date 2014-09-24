@@ -1,0 +1,5 @@
+gain_x,gain_y,gain_z,offset_x,offset_y,offset_z,output_x,output_y,output_z
+0,0,0,128,128,128,0,0,0
+gain_x,gain_y,gain_z,offset_x,offset_y,offset_z,output_x,output_y,output_z
+0,0,0,128,128,128,0,0,0
+1,1,1,128,128,128,0,0,0

@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{38E3A752-8E6C-4BF6-8E94-75EEFA61273B}</ProjectGuid>
+    <RootNamespace>ISenTekAssistant</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExecutablePath>C:\Program Files (x86)\IVI Foundation\VISA\WinNT\Bin;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>C:\Program Files (x86)\IVI Foundation\VISA\WinNT\include;$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\Program Files (x86)\IVI Foundation\VISA\WinNT\lib\msc;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>./Lib/iowkit.lib;./Lib/iSenInterface.lib;./Lib/MyUtilityLib.lib;./Lib/isentek.lib</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;mfc100u.lib;libcmt.lib</IgnoreSpecificDefaultLibraries>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>./Lib/iowkit.lib;./Lib/iSenInterface.lib;./Lib/MyUtilityLib.lib;./Lib/isentek.lib;</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;mfc100u.lib</IgnoreSpecificDefaultLibraries>
+      <HeapReserveSize>
+      </HeapReserveSize>
+      <HeapCommitSize>
+      </HeapCommitSize>
+      <StackReserveSize>
+      </StackReserveSize>
+      <StackCommitSize>
+      </StackCommitSize>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="res\Agilent_logo.bmp" />
+    <None Include="res\home-lg.bmp" />
+    <None Include="res\ISenTekAssistant.ico" />
+    <None Include="res\ISenTekAssistant.rc2" />
+    <None Include="res\Logo.bmp" />
+    <None Include="res\mask.bmp" />
+    <None Include="res\tp.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConfigurationDlg.h" />
+    <ClInclude Include="DMARD08.h" />
+    <ClInclude Include="Interface\aardvark\aardvark.h" />
+    <ClInclude Include="Interface\aardvark\AardvarkClass.h" />
+    <ClInclude Include="Interface\IOW\IowClass.h" />
+    <ClInclude Include="Interface\IOW\iowkit.h" />
+    <ClInclude Include="ISenI2cAccess.h" />
+    <ClInclude Include="ISenI2cMaster.h" />
+    <ClInclude Include="iSenInterfaceLinker.h" />
+    <ClInclude Include="isenteklib.h" />
+    <ClInclude Include="IST8301RegTable.h" />
+    <ClInclude Include="KXTF9.h" />
+    <ClInclude Include="SAPrefsStatic.h" />
+    <ClInclude Include="SAPrefsSubDlg.h" />
+    <ClInclude Include="SATreeCtrl.h" />
+    <ClInclude Include="SimpleMovingAverage.h" />
+    <ClInclude Include="SubDlgSimulation.h" />
+    <ClInclude Include="ISenTekAssistant.h" />
+    <ClInclude Include="ISenTekAssistantDlg.h" />
+    <ClInclude Include="IST8301Def.h" />
+    <ClInclude Include="MyUtility.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Total.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ConfigurationDlg.cpp" />
+    <ClCompile Include="ISenI2cAccess.cpp" />
+    <ClCompile Include="ISenTekAssistantDlgLayout.cpp" />
+    <ClCompile Include="SAPrefsStatic.cpp" />
+    <ClCompile Include="SAPrefsSubDlg.cpp" />
+    <ClCompile Include="SATreeCtrl.cpp" />
+    <ClCompile Include="SimpleMovingAverage.cpp" />
+    <ClCompile Include="SubDlgSimulation.cpp" />
+    <ClCompile Include="ISenTekAssistant.cpp" />
+    <ClCompile Include="ISenTekAssistantDlg.cpp" />
+    <ClCompile Include="ISenTekAssistantDlgMenu.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ISenTekAssistant.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="ISenTekAssistant.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
